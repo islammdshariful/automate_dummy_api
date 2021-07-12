@@ -1,0 +1,22 @@
+{
+  "name": "Mr. A",
+  "username": "mr1997",
+  "email": "mr1997@faki.api",
+  "address": {
+    "street": "Kulas Light",
+    "suite": "Apt. 556",
+    "city": "Gwenborough",
+    "zipcode": "92998-3874",
+    "geo": {
+      "lat": "-37.3159",
+      "lng": "81.1496"
+    }
+  },
+  "phone": "01622152381",
+  "website": "fakiapi.user.all.fk",
+  "company": {
+    "name": "FakiAPI",
+    "catchPhrase": "Lorem Ipsum is simply a dummy text.",
+    "bs": "lorem-ipsum-is-simply-a-dummy-text"
+  }
+}
