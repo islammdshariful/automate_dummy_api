@@ -16,7 +16,7 @@ class UserClient(BaseClient):
     def __init__(self):
         super().__init__()
 
-        self.base_url = BASE_URL
+        self.base_url = BASE_URL+"users/"
         self.request = APIRequest()
 
     def create_user(self, body=None):
@@ -67,5 +67,5 @@ class UserClient(BaseClient):
         return self.request.put(people, payload, self.headers)
 
     def delete_user(self, person_id):
-        url = f'{BASE_URL}users/{person_id}'
+        url = f'{self.base_url}{person_id}'
         return self.request.delete(url)

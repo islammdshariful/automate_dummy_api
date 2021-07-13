@@ -5,7 +5,7 @@ from cerberus import Validator
 
 
 def for_one_user(user):
-    validator = Validator(user_schema, require_all=True)
+    validator = Validator(user_schema, require_all=False)
     is_valid = validator.validate(user)
     with soft_assertions():
         assert_that(is_valid, description=validator.errors).is_true()

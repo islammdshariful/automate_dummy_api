@@ -4,6 +4,7 @@ from json import dumps
 import requests
 
 from clients.users.people_client import UserClient
+from config import BASE_URL
 from tests.assertions.users_assertions import *
 from tests.assertions.schema_validation import *
 from tests.helpers.people_helpers import *
@@ -20,23 +21,29 @@ def test_read_all_has_user():
 
 def test_new_user_can_be_added():
     username, response = client.create_user()
-    assert_that(response.status_code, description='User not created').is_equal_to(requests.codes.no_content)
+    assert_that(response.status_code, description='User not created').is_equal_to(requests.codes.created)
 
     users = client.read_all_users().as_dict
     is_new_user_created = search_created_user_in(users, username)
     assert_user_is_present(is_new_user_created)
 
+    new_user_id = search_created_user_in(users, username)['id']
+    response_1 = client.read_one_user_by_id(new_user_id)
+    pretty_print(response_1.as_dict)
+
 
 def test_created_user_can_be_deleted():
-    user_username, _ = client.create_user()
+    user_username, response = client.create_user()
     pretty_print(user_username)
+    pretty_print(response.as_dict)
 
-    peoples = client.read_all_users().as_dict
-    new_user_id = search_created_user_in(peoples, user_username)['id']
+    users = client.read_all_users().as_dict
+    new_user_id = search_created_user_in(users, user_username)['id']
     print(new_user_id)
 
-    response = client.delete_user(new_user_id)
-    assert_that(response.status_code).is_equal_to(requests.codes.ok)
+    response_1 = client.delete_user(new_user_id)
+    pretty_print("Status code:" + response_1.status_code)
+    assert_that(response_1.status_code).is_equal_to(requests.codes.ok)
 
 
 def test_get_all_users():
@@ -48,12 +55,13 @@ def test_get_specific_user():
     user_id = 7
     response = client.read_one_user_by_id(user_id)
     pretty_print(response.as_dict)
+    pretty_print(response.text)
 
 
 def test_delete_specific_user():
-    user_id = 12
+    user_id = 16
     response = client.delete_user(user_id)
-    pretty_print(response.as_dict)
+    pretty_print("Status code:" + response.status_code)
 
 
 def test_update_specific_user():
@@ -82,7 +90,7 @@ def test_user_can_be_added_with_a_json_template(create_data):
 
 
 def test_read_one_operation_has_expected_schema():
-    user_id = 1
+    user_id = 2
     response = client.read_one_user_by_id(user_id)
     user = json.loads(response.text)
 
